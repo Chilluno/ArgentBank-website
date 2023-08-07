@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../features/auth/userSlice";
+import { loginUser, userProfile } from "../features/auth/userSlice";
 import { useNavigate } from "react-router-dom";
 
 export const LoginModal = () => {
@@ -22,6 +22,7 @@ export const LoginModal = () => {
       if (result.payload) {
         setUsername('');
         setPassword('');
+        dispatch(userProfile()).then((result) => {})
         navigate('/');
       }
     })
