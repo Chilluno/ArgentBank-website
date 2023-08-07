@@ -1,24 +1,18 @@
 import React from "react"
-import {Link, useNavigate} from "react-router-dom"
-import { useDispatch } from "react-redux";
-import { userProfile } from "../features/auth/userSlice";
+import {Link} from "react-router-dom"
 import argentBankLogo from "../img/argentBankLogo.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
+import { faUserCircle, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 
 export const Header = () => {
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const handleUserProfile = (e) =>{
-    e.preventDefault();
-
-    dispatch(userProfile()).then((result) => {
-      if(result){
-        navigate("/profile")
-      }
-    })
+  let userName;
+  if(localStorage.getItem("user")){
+   userName = JSON.parse(localStorage.getItem("user"));
+   userName = userName.userName;
+  }
+  else{
+    userName = "Profile";
   }
 
   const handleUserLogout = (e) => {
@@ -40,11 +34,13 @@ export const Header = () => {
           localStorage.getItem("token") === null ? <div><Link to="/login" className="main-nav-item">
           <FontAwesomeIcon icon={faUserCircle} className="main-nav-icon"/>
             Sign In
-         </Link></div> : <div><Link to="/profile" onClick={handleUserProfile} className="main-nav-item">
+         </Link></div> : <div><Link to="/profile" className="main-nav-item">
           <FontAwesomeIcon icon={faUserCircle} className="main-nav-icon"/>
-          Profile
+          {userName}
           </Link>
-          <Link to="/" onClick={handleUserLogout} className="main-nav-item"> Sign Out</Link></div>
+          <Link to="/" onClick={handleUserLogout} className="main-nav-item">
+          <FontAwesomeIcon icon={faRightFromBracket} className="main-nav-icon"/>  
+            Sign Out</Link></div>
         }
       
     </nav>
