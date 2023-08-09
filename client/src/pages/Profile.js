@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Account } from "../components/Account"
-
-let accountDetails = null;
+import { useDispatch, useSelector } from "react-redux";
+import { userNameEdit } from "../features/user/userSlice";
 
 const placeholderDetails = [{
 	title: "Argent Bank Checking (x8349)",
@@ -27,12 +27,22 @@ export const Profile = () =>{
 		setShowForm(!showForm);
 	}
 
-	if(localStorage.getItem("user")){
-		accountDetails = 	JSON.parse(localStorage.getItem("user"));
-		console.log(accountDetails);
-	}
-	else{
-		accountDetails = null;
+	const userDetails = useSelector((state) => state.user.userInfo);
+
+
+	const dispatch = useDispatch();
+	const handleUserEditEvent = (e) => {
+		e.preventDefault();
+		let nameEdit = {
+			userName: username,
+		};
+	
+		dispatch(userNameEdit(nameEdit)).then((result) => {
+			if(result.payload){
+				setUsername("");
+				showUserForm();
+			}
+		})
 	}
 
    return <main className="main bg-dark">
@@ -40,7 +50,7 @@ export const Profile = () =>{
 		<h1>
 		Welcome back
 		<br></br>
-		{`${accountDetails.firstName} ${accountDetails.lastName} !`}
+		{`${userDetails.firstName} ${userDetails.lastName} !`}
 		</h1>
 {
 	(showForm === false && (<button className="edit-button" onClick={showUserForm}>Edit Name</button>))
@@ -62,7 +72,7 @@ export const Profile = () =>{
 	<input
 	type="text"
 	id="firstname"
-	value={accountDetails.firstName}
+	value={userDetails.firstName}
 	disabled
 	/>
 	</div>
@@ -71,12 +81,12 @@ export const Profile = () =>{
 	<input
 	type="text"
 	id="lastname"
-	value={accountDetails.lastName}
+	value={userDetails.lastName}
 	disabled
 	/>
 	</div>
 	<div>
-	<button type="submit" className="save-button">
+	<button type="submit" className="save-button" onClick={handleUserEditEvent}>
 		Save
 	</button>
 	<button type="button" className="cancel-button" onClick={showUserForm}>
@@ -89,7 +99,7 @@ export const Profile = () =>{
 	<h2 className="sr-only">Accounts</h2>
 	{
 		placeholderDetails.map((details, index) => (
-			<Account key={index} title={details.title} description={details.description} amount={details.amount} username={accountDetails.userName}/>
+			<Account key={index} title={details.title} description={details.description} amount={details.amount}/>
 		)) 
 	}
 </main>
