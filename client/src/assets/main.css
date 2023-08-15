@@ -189,6 +189,19 @@ html {
    font-size: 5rem;
  }
  
+ .login-error{
+  margin: 10em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+ }
+
+ .login-error a:visited{
+  color: white;
+  text-decoration: none;
+ }
+
  .edit-content {
   box-sizing: border-box;
   background-color: white;

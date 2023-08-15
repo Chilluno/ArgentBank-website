@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Account } from "../components/Account"
 import { useDispatch, useSelector } from "react-redux";
 import { userNameEdit } from "../features/user/userSlice";
+import {Link} from "react-router-dom"
 
 const placeholderDetails = [{
 	title: "Argent Bank Checking (x8349)",
@@ -28,7 +29,7 @@ export const Profile = () =>{
 	}
 
 	const userDetails = useSelector((state) => state.user.userInfo);
-
+	const hasToken = useSelector((state) => state.user.token);
 
 	const dispatch = useDispatch();
 	const handleUserEditEvent = (e) => {
@@ -43,6 +44,15 @@ export const Profile = () =>{
 				showUserForm();
 			}
 		})
+	}
+
+	if(!hasToken){
+		return <main className="main bg-dark">
+				<div className="header login-error">
+					<h1>You need to sign in to see this page !</h1>
+					<Link to="/">Go back to the homepage</Link>
+		</div>
+		</main>
 	}
 
    return <main className="main bg-dark">
